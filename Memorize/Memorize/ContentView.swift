@@ -8,22 +8,57 @@
 import SwiftUI
 
 struct ContentView: View {
+    var emojis = ["✈️", "🚝", "🚌", "🚲", "🚘", "🚁", "🛵", "🏎", "🚃", "🛺", "⛵️", "🚤", "🚕", "🚚", "🛸", "🛶", "🚢", "🚡", "🛰", "🛻", "🚜", "🏍", "🚔", "🛴"]
+    @State var emojiCount = 4
+    
     var body: some View {
-        HStack{
-            CardView(isFaceUp:true)
-            CardView(isFaceUp:false)
-            CardView(isFaceUp:true)
-            CardView(isFaceUp:false)
-            
-        }
-            .padding(.horizontal)
+        VStack{
+            ScrollView{
+                LazyVGrid(columns: [GridItem(.adaptive(minimum: 75))] ){
+                    ForEach(emojis[0..<emojiCount], id:\.self, content:{ emoji in
+                        CardView(isFaceUp:true,content: emoji).aspectRatio(2/3, contentMode: .fit)
+                    })
+                }
+            }
             .foregroundColor(.red)
+            Spacer()
+            HStack{
+                removeButton
+                Spacer()
+                addButton.foregroundColor(.green)
+            }
+            .font(.largeTitle)
+            .padding(.horizontal)
+
+        }
+        .padding(.horizontal)
+    }
+    //plus.circle
+    var removeButton: some View{
+        Button(action: {
+            if emojiCount > 1{
+                emojiCount -= 1
+            }
+        }, label: {
+            Image(systemName: "minus.circle")
+        }).foregroundColor(.blue)
+    }
+    
+    var addButton: some View{
+        Button(action: {
+            if emojiCount < emojis.count{
+                emojiCount += 1
+            }
+        }, label: {
+            Image(systemName: "plus.circle")
+        })
     }
 }
 
 
 struct CardView: View{
     @State var isFaceUp: Bool
+    var content: String
     var body: some View{
         ZStack{
             let shape = RoundedRectangle(cornerRadius: 20.0)
@@ -32,10 +67,9 @@ struct CardView: View{
                     .fill()
                     .foregroundColor(.white)
                 shape
-                    .stroke()
-                    .stroke(lineWidth: 3.0)
+                    .strokeBorder(lineWidth: 3.0)
 
-                Text("✈️")
+                Text(content)
                     .font(.largeTitle)
                     .foregroundColor(.blue)
             }else{
