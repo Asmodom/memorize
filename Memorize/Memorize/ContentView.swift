@@ -21,14 +21,14 @@ struct ContentView: View {
                 }
             }
             .foregroundColor(.red)
-            Spacer()
+            /*Spacer()
             HStack{
                 removeButton
                 Spacer()
                 addButton.foregroundColor(.green)
             }
             .font(.largeTitle)
-            .padding(.horizontal)
+            .padding(.horizontal)*/
 
         }
         .padding(.horizontal)
